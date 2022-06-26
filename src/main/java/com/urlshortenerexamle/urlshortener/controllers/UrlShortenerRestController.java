@@ -1,7 +1,8 @@
 package com.urlshortenerexamle.urlshortener.controllers;
 
-
-import com.urlshortenerexamle.urlshortener.urlEntity.Url;
+import com.urlshortenerexamle.urlshortener.entity.Url;
+import com.urlshortenerexamle.urlshortener.util.Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class UrlShortenerRestController {
 
@@ -18,26 +20,15 @@ public class UrlShortenerRestController {
 
     @PostMapping("/shortenurl")
     public ResponseEntity<Object> getShortenUrl(@RequestBody Url shortenUrl) {
-        String shortKey = getRandomChars();
-        setShortUrl(shortKey, shortenUrl);
+        String shortKey = Util.getRandomChars();
+        Util.setShortUrl(shortenUrlList, shortKey, shortenUrl);
+        log.info("controller layer - full url :{} -> short url :{}", shortenUrl.getFullUrl(), shortenUrl.getShortUrl());
         return new ResponseEntity<Object>(shortenUrl, HttpStatus.OK);
     }
 
     @GetMapping("/s/{randomstring}")
-    public void getFullUrl(HttpServletResponse response, @PathVariable("randomstring") String randomString) throws IOException {
-        response.sendRedirect(shortenUrlList.get(randomString).getFullUrl());
-    }
-
-    private void setShortUrl(String randomChar, Url shortUrl) {
-        shortUrl.setShortUrl("http://localhost:8080/s/" + randomChar);
-        shortenUrlList.put(randomChar, shortUrl);
-    }
-
-    private String getRandomChars() {
-        String randomStr = "";
-        String possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for (int i = 0; i < 5; i++)
-            randomStr += possibleChars.charAt((int) Math.floor(Math.random() * possibleChars.length()));
-        return randomStr;
+    public void getFullUrl(HttpServletResponse response, @PathVariable("randomstring") String key) throws IOException {
+        log.info("controller layer - redirecting from http://localhost:8080/s/:{} to :{}", key, shortenUrlList.get(key).getFullUrl());
+        response.sendRedirect(shortenUrlList.get(key).getFullUrl());
     }
 }

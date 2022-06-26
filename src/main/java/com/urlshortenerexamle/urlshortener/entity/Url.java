@@ -1,4 +1,4 @@
-package com.urlshortenerexamle.urlshortener.urlEntity;
+package com.urlshortenerexamle.urlshortener.entity;
 
 public class Url {
     private String fullUrl;
