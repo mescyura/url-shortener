@@ -9,7 +9,7 @@ When user opens short url, it will be automatically redirected to original (long
 $ git clone https://github.com/mescyura/url-shortener.git
 $ run it
 ```
-    - use postman or insomnia to reack endpoints
+    - use postman or insomnia to reach endpoints
 ####**1.Shorten URL POST**
 ```
 POST http://localhost:8080/api/v1/shortenurl - make a short url
@@ -23,8 +23,8 @@ POST http://localhost:8080/api/v1/shortenurl - make a short url
 --header "Content-Type:application/json" 
 http://54.200.113.144:8080/api/v1/shorten
 authorization credentials
-$ username - test
-$ password - test
+$ username - user
+$ password - user
 
 ```
 **Response :**
